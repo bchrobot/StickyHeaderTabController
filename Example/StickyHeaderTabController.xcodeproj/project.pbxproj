@@ -28,9 +28,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2C2774F41F7443750077439B /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
 		414941D7D4DE5B265BECB7E5 /* Pods-StickyHeaderTabController_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StickyHeaderTabController_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-StickyHeaderTabController_Tests/Pods-StickyHeaderTabController_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		42C8CA37C40A0ED025263B3E /* Pods-StickyHeaderTabController_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StickyHeaderTabController_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-StickyHeaderTabController_Tests/Pods-StickyHeaderTabController_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		50A93FB9FB3C25DC60EAE8DB /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		50A93FB9FB3C25DC60EAE8DB /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* StickyHeaderTabController_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StickyHeaderTabController_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -44,8 +45,8 @@
 		6DE85205C7064BDBFCB282FF /* Pods-StickyHeaderTabController_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StickyHeaderTabController_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-StickyHeaderTabController_Example/Pods-StickyHeaderTabController_Example.release.xcconfig"; sourceTree = "<group>"; };
 		7DC4041BF19F577470402E36 /* Pods-StickyHeaderTabController_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StickyHeaderTabController_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-StickyHeaderTabController_Example/Pods-StickyHeaderTabController_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		C6B025A788175A772FB95028 /* Pods_StickyHeaderTabController_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StickyHeaderTabController_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D10274C3659BDFB230220774 /* StickyHeaderTabController.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = StickyHeaderTabController.podspec; path = ../StickyHeaderTabController.podspec; sourceTree = "<group>"; };
-		E44E54F59E6D3CBD8F16E080 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		D10274C3659BDFB230220774 /* StickyHeaderTabController.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = StickyHeaderTabController.podspec; path = ../StickyHeaderTabController.podspec; sourceTree = "<group>"; };
+		E44E54F59E6D3CBD8F16E080 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		EE6C41A64BF071F7145B7E33 /* Pods_StickyHeaderTabController_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StickyHeaderTabController_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -134,6 +135,7 @@
 			children = (
 				D10274C3659BDFB230220774 /* StickyHeaderTabController.podspec */,
 				50A93FB9FB3C25DC60EAE8DB /* README.md */,
+				2C2774F41F7443750077439B /* CHANGELOG.md */,
 				E44E54F59E6D3CBD8F16E080 /* LICENSE */,
 			);
 			name = "Podspec Metadata";
