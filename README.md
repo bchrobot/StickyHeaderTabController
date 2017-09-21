@@ -1,6 +1,6 @@
 # StickyHeaderTabController
 
-[![CI Status](http://img.shields.io/travis/Benjamin Chrobot/StickyHeaderTabController.svg?style=flat)](https://travis-ci.org/Benjamin Chrobot/StickyHeaderTabController)
+[![CI Status](http://img.shields.io/travis/bchrobot/StickyHeaderTabController.svg?style=flat)](https://travis-ci.org/bchrobot/StickyHeaderTabController)
 [![Version](https://img.shields.io/cocoapods/v/StickyHeaderTabController.svg?style=flat)](http://cocoapods.org/pods/StickyHeaderTabController)
 [![License](https://img.shields.io/cocoapods/l/StickyHeaderTabController.svg?style=flat)](http://cocoapods.org/pods/StickyHeaderTabController)
 [![Platform](https://img.shields.io/cocoapods/p/StickyHeaderTabController.svg?style=flat)](http://cocoapods.org/pods/StickyHeaderTabController)
@@ -27,3 +27,4 @@ Benjamin Chrobot, benjamin.chrobot@alum.mit.edu
 ## License
 
 StickyHeaderTabController is available under the MIT license. See the LICENSE file for more info.
+
