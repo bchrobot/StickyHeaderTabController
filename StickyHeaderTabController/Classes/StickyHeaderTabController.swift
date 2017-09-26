@@ -74,9 +74,6 @@ open class StickyHeaderTabController: UIViewController {
     /// The ScrollView containing the content tabs.
     private let horizontalScrollView = UIScrollView()
 
-    /// The content wrapper inside `horizontalScrollView`.
-    private let contentView = UIView()
-
     /// The tab bar showing the titles of each content tab.
     private let tabBar = StickyHeaderTabBarView(frame: .zero)
 
@@ -107,7 +104,6 @@ open class StickyHeaderTabController: UIViewController {
         horizontalScrollView.frame = view.bounds
         horizontalScrollView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
-        horizontalScrollView.addSubview(contentView)
         // TODO: set frame correctly?
 
         // view.insertSubview(gradientBackground, at: 0)
@@ -179,7 +175,7 @@ open class StickyHeaderTabController: UIViewController {
         for newTab in newTabs {
             // Notify VCs of changes
             addChildViewController(newTab)
-            contentView.addSubview(newTab.view)
+            horizontalScrollView.addSubview(newTab.view)
             newTab.didMove(toParentViewController: self)
 
             // Tab-specific configuration
