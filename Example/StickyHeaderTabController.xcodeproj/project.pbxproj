@@ -8,8 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		15431A1D7202EABA10191BAE /* Pods_StickyHeaderTabController_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6B025A788175A772FB95028 /* Pods_StickyHeaderTabController_Tests.framework */; };
+		2C167C7F1F7A9F680068FC62 /* ColorsTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C167C7E1F7A9F680068FC62 /* ColorsTabViewController.swift */; };
+		2C167C811F7A9FFD0068FC62 /* TabData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C167C801F7A9FFD0068FC62 /* TabData.swift */; };
+		2C225FEB1F799F0C005A00FA /* ExampleStickyHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C225FEA1F799F0C005A00FA /* ExampleStickyHeaderView.swift */; };
+		2C225FED1F799F2F005A00FA /* ExampleStickyHeroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C225FEC1F799F2F005A00FA /* ExampleStickyHeroView.swift */; };
+		2C2774F81F74502C0077439B /* StatesTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2774F71F74502C0077439B /* StatesTabViewController.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
-		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
+		607FACD81AFB9204008FA782 /* ExampleTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ExampleTabController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
 		607FACDD1AFB9204008FA782 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDC1AFB9204008FA782 /* Images.xcassets */; };
 		607FACE01AFB9204008FA782 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 607FACDE1AFB9204008FA782 /* LaunchScreen.xib */; };
@@ -28,14 +33,19 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2C167C7E1F7A9F680068FC62 /* ColorsTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsTabViewController.swift; sourceTree = "<group>"; };
+		2C167C801F7A9FFD0068FC62 /* TabData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabData.swift; sourceTree = "<group>"; };
+		2C225FEA1F799F0C005A00FA /* ExampleStickyHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleStickyHeaderView.swift; sourceTree = "<group>"; };
+		2C225FEC1F799F2F005A00FA /* ExampleStickyHeroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleStickyHeroView.swift; sourceTree = "<group>"; };
 		2C2774F41F7443750077439B /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
+		2C2774F71F74502C0077439B /* StatesTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatesTabViewController.swift; sourceTree = "<group>"; };
 		414941D7D4DE5B265BECB7E5 /* Pods-StickyHeaderTabController_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StickyHeaderTabController_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-StickyHeaderTabController_Tests/Pods-StickyHeaderTabController_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		42C8CA37C40A0ED025263B3E /* Pods-StickyHeaderTabController_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StickyHeaderTabController_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-StickyHeaderTabController_Tests/Pods-StickyHeaderTabController_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		50A93FB9FB3C25DC60EAE8DB /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* StickyHeaderTabController_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StickyHeaderTabController_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		607FACD71AFB9204008FA782 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		607FACD71AFB9204008FA782 /* ExampleTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleTabController.swift; sourceTree = "<group>"; };
 		607FACDA1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		607FACDC1AFB9204008FA782 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		607FACDF1AFB9204008FA782 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -70,6 +80,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2C225FE91F799EE5005A00FA /* StickyViews */ = {
+			isa = PBXGroup;
+			children = (
+				2C225FEA1F799F0C005A00FA /* ExampleStickyHeaderView.swift */,
+				2C225FEC1F799F2F005A00FA /* ExampleStickyHeroView.swift */,
+			);
+			path = StickyViews;
+			sourceTree = "<group>";
+		};
+		2C2774F61F74500B0077439B /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
+				2C2774F71F74502C0077439B /* StatesTabViewController.swift */,
+				2C167C7E1F7A9F680068FC62 /* ColorsTabViewController.swift */,
+				2C167C801F7A9FFD0068FC62 /* TabData.swift */,
+			);
+			path = Tabs;
+			sourceTree = "<group>";
+		};
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
@@ -95,7 +124,9 @@
 			isa = PBXGroup;
 			children = (
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
-				607FACD71AFB9204008FA782 /* ViewController.swift */,
+				607FACD71AFB9204008FA782 /* ExampleTabController.swift */,
+				2C225FE91F799EE5005A00FA /* StickyViews */,
+				2C2774F61F74500B0077439B /* Tabs */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
 				607FACDE1AFB9204008FA782 /* LaunchScreen.xib */,
@@ -217,10 +248,12 @@
 				TargetAttributes = {
 					607FACCF1AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
+						DevelopmentTeam = VLLF2Q7K3G;
 						LastSwiftMigration = 0820;
 					};
 					607FACE41AFB9204008FA782 = {
 						CreatedOnToolsVersion = 6.3.1;
+						DevelopmentTeam = VLLF2Q7K3G;
 						LastSwiftMigration = 0820;
 						TestTargetID = 607FACCF1AFB9204008FA782;
 					};
@@ -381,7 +414,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
+				2C167C811F7A9FFD0068FC62 /* TabData.swift in Sources */,
+				2C225FED1F799F2F005A00FA /* ExampleStickyHeroView.swift in Sources */,
+				607FACD81AFB9204008FA782 /* ExampleTabController.swift in Sources */,
+				2C225FEB1F799F0C005A00FA /* ExampleStickyHeaderView.swift in Sources */,
+				2C2774F81F74502C0077439B /* StatesTabViewController.swift in Sources */,
+				2C167C7F1F7A9F680068FC62 /* ColorsTabViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -516,6 +554,7 @@
 			baseConfigurationReference = 7DC4041BF19F577470402E36 /* Pods-StickyHeaderTabController_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = VLLF2Q7K3G;
 				INFOPLIST_FILE = StickyHeaderTabController/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
@@ -530,6 +569,7 @@
 			baseConfigurationReference = 6DE85205C7064BDBFCB282FF /* Pods-StickyHeaderTabController_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = VLLF2Q7K3G;
 				INFOPLIST_FILE = StickyHeaderTabController/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
@@ -543,6 +583,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 42C8CA37C40A0ED025263B3E /* Pods-StickyHeaderTabController_Tests.debug.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = VLLF2Q7K3G;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -563,6 +604,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 414941D7D4DE5B265BECB7E5 /* Pods-StickyHeaderTabController_Tests.release.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = VLLF2Q7K3G;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
