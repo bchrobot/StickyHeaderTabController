@@ -51,6 +51,18 @@ open class StickyHeaderTabController: UIViewController {
 
     // MARK: - Private Properties
 
+    /// The combined height of sticky header, hero, and tab bar.
+    /// Could instead be a calculated variable, but then we lose the `didSet` functionality.
+    fileprivate var compoundHeaderHeight: CGFloat = 0.0 {
+        didSet {
+            updateOffsetForCompoundHeaderHeight(compoundHeaderHeight)
+        }
+    }
+
+    /// This represents what the offset would be if it were measured from the bottom of the tab bar.
+    /// It does not take into account the sticky header, hero, or tab bar height.
+    fileprivate var trueScrollOffset: CGFloat = 0.0
+
     private let tabBarHeight: CGFloat = 60.0
 
     override open var preferredStatusBarStyle: UIStatusBarStyle {
@@ -110,6 +122,14 @@ open class StickyHeaderTabController: UIViewController {
     // MARK: - Private Methods
 
     private func redrawWithOffsets() {
+        // Tactic:
+        // 1. Update frame size for everything (move to separate method?)
+        // 2. TODO: Calculate new positions of each element based on current "content offset"
+        //          This is to ensure the sticky header and tab bar are pinned
+        // 3. TODO: Update all frame positions
+        // 4. TODO: Pass updated offset to header and hero (for animations -- should be in "scrolled" method)
+        // 5. TODO: Pass updated offset to all tabs (should really be in "scrolled" method)
+
         var currentYOffset:CGFloat = 0.0
         let width = view.bounds.width
 
@@ -142,10 +162,7 @@ open class StickyHeaderTabController: UIViewController {
                               height: tabBarHeight)
         currentYOffset += tabBarHeight
 
-        // TODO: Calculate new positions of each element based on current "content offset"
-        // TODO: Update all frames
-        // TODO: Pass updated offset to header and hero
-        // TODO: Pass updated offset to all tabs
+        compoundHeaderHeight = currentYOffset
     }
 
     private func replace(oldTabs: [StickyHeaderContentTabViewController],
@@ -169,9 +186,25 @@ open class StickyHeaderTabController: UIViewController {
             // profileTab.scrollViewDelegate = self
             // profileTab.scrollView.panGestureRecognizer.isEnabled = false
         }
+        updateOffsetForCompoundHeaderHeight(compoundHeaderHeight)
 
         let selectedItem = IndexPath(item: 0, section: 0)
         tabBar.selectItem(at: selectedItem, animated: false, scrollPosition: .centeredHorizontally)
+
+        // FIXME: vv necessary?
+        // view.setNeedsLayout()
+    }
+
+    /// Update the content inset + offset of all tabs for a change in compound header height.
+    private func updateOffsetForCompoundHeaderHeight(_ height: CGFloat) {
+        for tab in tabs {
+            tab.contentInset.top = height
+        }
+    }
+
+    /// Very much a WIP menthod.
+    private func handleScroll() {
+
     }
 
     // MARK: - Overrides

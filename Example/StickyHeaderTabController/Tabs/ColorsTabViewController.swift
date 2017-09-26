@@ -15,6 +15,10 @@ class ColorsTabViewController: StickyHeaderContentTabViewController {
 
     fileprivate let cellIdentifier = "ColorsCell"
 
+    override open var scrollView: UIScrollView {
+        return tableView
+    }
+
     // MARK: Views
 
     private let tableView = UITableView()

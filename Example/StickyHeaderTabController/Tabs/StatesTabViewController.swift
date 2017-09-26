@@ -15,6 +15,10 @@ class StatesTabViewController: StickyHeaderContentTabViewController {
 
     fileprivate let cellIdentifier = "StatesCell"
 
+    override open var scrollView: UIScrollView {
+        return tableView
+    }
+
     // MARK: Views
 
     private let tableView = UITableView()
