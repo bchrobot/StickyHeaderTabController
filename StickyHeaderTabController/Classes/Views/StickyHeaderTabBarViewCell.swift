@@ -25,6 +25,7 @@ public class StickyHeaderTabBarViewCell: UICollectionViewCell {
     // MARK: - Private Properties
 
     private static let titleFont = UIFont.systemFont(ofSize: 14)
+    private static let selectedTitleFont = UIFont.boldSystemFont(ofSize: 14)
 
     // MARK: Views
 
@@ -61,9 +62,22 @@ public class StickyHeaderTabBarViewCell: UICollectionViewCell {
         titleLabel.frame = CGRect(x: 0, y: 0, width: bounds.width, height: bounds.height)
     }
 
+    public override var isSelected: Bool {
+        didSet {
+            repaintElements()
+        }
+    }
+
     // MARK: - Public Methods
 
     open static func cellSize(for text: String) -> CGSize {
         return text.size(attributes: [NSFontAttributeName: StickyHeaderTabBarViewCell.titleFont])
+    }
+
+    /// Called when cell needs to be repainted. Notably when the cell has been selected
+    open func repaintElements() {
+        titleLabel.font = isSelected
+            ? StickyHeaderTabBarViewCell.selectedTitleFont
+            : StickyHeaderTabBarViewCell.titleFont
     }
 }

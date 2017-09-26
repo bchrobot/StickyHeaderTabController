@@ -169,6 +169,9 @@ open class StickyHeaderTabController: UIViewController {
             // profileTab.scrollViewDelegate = self
             // profileTab.scrollView.panGestureRecognizer.isEnabled = false
         }
+
+        let selectedItem = IndexPath(item: 0, section: 0)
+        tabBar.selectItem(at: selectedItem, animated: false, scrollPosition: .centeredHorizontally)
     }
 
     // MARK: - Overrides
