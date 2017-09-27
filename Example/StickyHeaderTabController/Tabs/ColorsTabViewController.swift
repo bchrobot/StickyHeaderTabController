@@ -3,7 +3,7 @@
 //  StickyHeaderTabController_Example
 //
 //  Created by Benjamin Chrobot on 9/26/17.
-//  Copyright © 2017 CocoaPods. All rights reserved.
+//  Copyright (c) 2017 Benjamin Chrobot. All rights reserved.
 //
 
 import UIKit

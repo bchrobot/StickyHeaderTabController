@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Scrolling of sticky components.
 - Synchronization of horizontal scrolling and tab selection.
 
+### Changed
+- Updated copyright notices.
+
 ### Fixed
 - Vertical scrolling of tabs within horizontal container.
 
