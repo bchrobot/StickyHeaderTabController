@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Selected state for tab bar.
 - Proper calculations for tab contentInset.
 - Scrolling of sticky components.
+- Synchronization of horizontal scrolling and tab selection.
 
 ### Fixed
 - Vertical scrolling of tabs within horizontal container.

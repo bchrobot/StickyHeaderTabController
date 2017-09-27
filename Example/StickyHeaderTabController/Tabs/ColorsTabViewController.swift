@@ -48,6 +48,7 @@ class ColorsTabViewController: StickyHeaderContentTabViewController {
     private func setUpTableView() {
         view.addSubview(tableView)
         tableView.dataSource = self
+        tableView.delegate = self
 
         // Frame
         tableView.frame = view.bounds

@@ -9,6 +9,11 @@
 import UIKit
 
 public protocol StickyHeaderTabBarViewDelegate: class {
+    func stickyHeaderTabBarView(_ stickyHeaderTabBarView: StickyHeaderTabBarView,
+                                tabSelectedAtIndex index: Int)
+}
+
+public protocol StickyHeaderTabBarViewDataSource: class {
     func stickyHeaderTabBarViewNumberOfTabs(_ stickyHeaderTabBarView: StickyHeaderTabBarView) -> Int
     func stickyHeaderTabBarView(_ stickyHeaderTabBarView: StickyHeaderTabBarView,
                                 titleAtIndex index: Int) -> String?
@@ -19,6 +24,7 @@ public class StickyHeaderTabBarView: UICollectionView {
     // MARK: - Public Properties
 
     public weak var tabDelegate: StickyHeaderTabBarViewDelegate?
+    public weak var tabDataSource: StickyHeaderTabBarViewDataSource?
 
     /// A kind of hacky way of letting view specify its height.
     /// TODO: refactor in terms of preferredContentSize?
@@ -50,6 +56,8 @@ public class StickyHeaderTabBarView: UICollectionView {
     // MARK: - Setup
 
     private func commonInit() {
+        backgroundColor = .white
+
         setUpCollectionView()
         setUpFlowLayout()
     }
@@ -57,9 +65,10 @@ public class StickyHeaderTabBarView: UICollectionView {
     private func setUpCollectionView() {
         dataSource = self
         delegate = self
+
+        bounces = false
         allowsSelection = true
         allowsMultipleSelection = false
-        backgroundColor = .clear
         showsHorizontalScrollIndicator = false
         showsVerticalScrollIndicator = false
 
@@ -75,12 +84,22 @@ public class StickyHeaderTabBarView: UICollectionView {
                                                bottom: 0,
                                                right: cellSpacing)
     }
+
+    // MARK: - Public Methods
+
+    public func setTabIndex(_ tabIndex: Int, animated: Bool) {
+        let newIndexPath = IndexPath(item: tabIndex, section: 0)
+        selectItem(at: newIndexPath, animated: animated, scrollPosition: .bottom)
+    }
 }
 
 // MARK: - UICollectionViewDelegate
 
 extension StickyHeaderTabBarView: UICollectionViewDelegate {
-
+    public func collectionView(_ collectionView: UICollectionView,
+                               didSelectItemAt indexPath: IndexPath) {
+        tabDelegate?.stickyHeaderTabBarView(self, tabSelectedAtIndex: indexPath.item)
+    }
 }
 
 // MARK: - UICollectionViewDataSource
@@ -89,7 +108,7 @@ extension StickyHeaderTabBarView: UICollectionViewDataSource {
 
     public func collectionView(_ collectionView: UICollectionView,
                                numberOfItemsInSection section: Int) -> Int {
-        let tabCount = tabDelegate?.stickyHeaderTabBarViewNumberOfTabs(self) ?? 0
+        let tabCount = tabDataSource?.stickyHeaderTabBarViewNumberOfTabs(self) ?? 0
 
         return tabCount
     }
@@ -97,7 +116,7 @@ extension StickyHeaderTabBarView: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView,
                                cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let index = indexPath.item
-        let title = tabDelegate?.stickyHeaderTabBarView(self, titleAtIndex: index)
+        let title = tabDataSource?.stickyHeaderTabBarView(self, titleAtIndex: index)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: titleCellReuseIdentifier,
                                                       for: indexPath) as! StickyHeaderTabBarViewCell
         cell.title = title
@@ -113,7 +132,7 @@ extension StickyHeaderTabBarView: UICollectionViewDelegateFlowLayout {
                                layout collectionViewLayout: UICollectionViewLayout,
                                sizeForItemAt indexPath: IndexPath) -> CGSize {
         let index = indexPath.item
-        let text = tabDelegate!.stickyHeaderTabBarView(self, titleAtIndex: index)!
+        let text = tabDataSource!.stickyHeaderTabBarView(self, titleAtIndex: index)!
         let naturalWidth = StickyHeaderTabBarViewCell.cellSize(for: text).width
 
         let numberOfTabs = CGFloat(collectionView.numberOfItems(inSection: 0))
