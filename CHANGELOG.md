@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Scrolling of sticky components.
 - Synchronization of horizontal scrolling and tab selection.
 - Customization of `StickyHeaderTabBarView`.
+- Name label position and cover photo blur animations based on scroll.
 
 ### Changed
 - Updated copyright notices.

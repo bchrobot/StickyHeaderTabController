@@ -14,10 +14,11 @@ public protocol StickyHeaderHeroViewDelegate: class {
 
 open class StickyHeaderHeroView: UIView {
 
+    // MARK: - Public Properties
+
     /// A kind of hacky way of letting view specify its height.
     /// TODO: refactor in terms of preferredContentSize?
     open var heroHeight: CGFloat {
         return 200.0
     }
-
 }

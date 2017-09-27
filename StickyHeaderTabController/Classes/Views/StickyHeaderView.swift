@@ -27,5 +27,16 @@ open class StickyHeaderView: UIView {
     open var pinnedHeight: CGFloat {
         return 60.0
     }
-    
+
+    // MARK: - Initialization
+
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        clipsToBounds = true
+    }
+
+    public required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }

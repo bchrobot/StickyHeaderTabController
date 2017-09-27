@@ -46,10 +46,32 @@ class ExampleTabController: StickyHeaderTabController {
         let percentage = min(max(0, ((currentValue - minValue) / (maxValue - minValue))), 1)
         exampleHero.avatarSizePercentage = percentage
     }
+
+    fileprivate func updateNameLabel() {
+        let headerBottom = exampleHeader.frame.origin.y + exampleHeader.frame.size.height
+
+        let heroTop = exampleHero.frame.origin.y
+        let heroNameOffset = exampleHero.nameLabel.frame.origin.y
+        let nameTop = heroTop + heroNameOffset
+
+        let overlapPx = max(0, headerBottom - nameTop)
+        let percentage = min(max(0, (overlapPx / exampleHero.nameLabel.bounds.height)), 1)
+        exampleHeader.percentVisibleName = percentage
+    }
+
+    fileprivate func updateBlur() {
+        let headerBottom = exampleHeader.frame.origin.y + exampleHeader.frame.size.height
+        let heroTop = exampleHero.frame.origin.y
+        let overlapPx = max(0, headerBottom - heroTop)
+        let percentage = min(max(0, (overlapPx / exampleHero.bounds.height)), 1)
+        exampleHeader.percentVisibleBlur = percentage
+    }
 }
 
 extension ExampleTabController: StickyHeaderTabControllerDelegate {
     func stickyHeaderTabControllerDidScrollVertically(_ controller: StickyHeaderTabController) {
         updateAvatarSize()
+        updateNameLabel()
+        updateBlur()
     }
 }
