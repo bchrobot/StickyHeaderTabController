@@ -20,6 +20,12 @@ public class StickyHeaderTabBarView: UICollectionView {
 
     public weak var tabDelegate: StickyHeaderTabBarViewDelegate?
 
+    /// A kind of hacky way of letting view specify its height.
+    /// TODO: refactor in terms of preferredContentSize?
+    open var tabBarHeight: CGFloat {
+        return 60.0
+    }
+
     // MARK: - Private Properties
 
     fileprivate let titleCellReuseIdentifier = "TitleCellReuseIdentifier"

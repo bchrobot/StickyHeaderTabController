@@ -13,6 +13,16 @@ class ExampleStickyHeroView: StickyHeaderHeroView {
 
     // MARK: - Properties
 
+    var avatarSizePercentage: CGFloat = 1.0 {
+        didSet {
+            if oldValue != avatarSizePercentage {
+                setNeedsLayout()
+            }
+        }
+    }
+
+    // MARK: Views
+
     let avatarImageView = UIImageView()
     let nameLabel = UILabel()
 
@@ -57,8 +67,11 @@ class ExampleStickyHeroView: StickyHeaderHeroView {
         let marginWidth: CGFloat = 10.0
 
         // Avatar frame
-        let avatarSize: CGFloat = 120.0
-        let avatarTopOffset: CGFloat = -35.0
+        let minimumSize: CGFloat = 75.0
+        let maximumSize: CGFloat = 120.0
+
+        let avatarSize: CGFloat = minimumSize + (avatarSizePercentage * (maximumSize - minimumSize))
+        let avatarTopOffset: CGFloat = 85.0 - avatarSize
         avatarImageView.frame = CGRect(x: marginWidth,
                                        y: avatarTopOffset,
                                        width: avatarSize,

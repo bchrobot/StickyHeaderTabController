@@ -28,8 +28,27 @@ class ExampleTabController: StickyHeaderTabController {
     // MARK: - Setup
 
     private func commonInit() {
+        delegate = self
+
         stickyHeader = exampleHeader
         hero = exampleHero
         tabs = [StatesTabViewController(), ColorsTabViewController()]
+    }
+
+    // Private Methods
+
+    fileprivate func updateAvatarSize() {
+        let maxValue = exampleHeader.headerHeight
+        let minValue = exampleHeader.pinnedHeight
+        let currentValue = exampleHero.frame.origin.y
+
+        let percentage = min(max(0, ((currentValue - minValue) / (maxValue - minValue))), 1)
+        exampleHero.avatarSizePercentage = percentage
+    }
+}
+
+extension ExampleTabController: StickyHeaderTabControllerDelegate {
+    func stickyHeaderTabControllerDidScrollVertically(_ controller: StickyHeaderTabController) {
+        updateAvatarSize()
     }
 }

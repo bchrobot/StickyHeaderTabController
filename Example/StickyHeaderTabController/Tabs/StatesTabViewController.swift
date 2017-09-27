@@ -48,6 +48,7 @@ class StatesTabViewController: StickyHeaderContentTabViewController {
     private func setUpTableView() {
         view.addSubview(tableView)
         tableView.dataSource = self
+        tableView.delegate = self
 
         // Frame
         tableView.frame = view.bounds
@@ -74,3 +75,7 @@ extension StatesTabViewController: UITableViewDataSource {
         return cell
     }
 }
+
+// MARK: - UITableViewDelegate
+
+extension StatesTabViewController: UITableViewDelegate {  }

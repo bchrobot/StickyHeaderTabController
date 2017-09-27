@@ -75,3 +75,7 @@ extension ColorsTabViewController: UITableViewDataSource {
         return cell
     }
 }
+
+// MARK: - UITableViewDelegate
+
+extension ColorsTabViewController: UITableViewDelegate {  }

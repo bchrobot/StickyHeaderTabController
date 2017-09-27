@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Example project profile.
 - Selected state for tab bar.
 - Proper calculations for tab contentInset.
+- Scrolling of sticky components.
 
 ### Fixed
 - Vertical scrolling of tabs within horizontal container.

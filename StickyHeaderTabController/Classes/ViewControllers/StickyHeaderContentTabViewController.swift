@@ -12,6 +12,8 @@ open class StickyHeaderContentTabViewController: UIViewController {
 
     // MARK: - Public Properties
 
+    weak var scrollViewDelegate: UIScrollViewDelegate?
+
     /// Set the top inset for the scrollView. This will be used to calculate the "true" inset.
     open var topInset: CGFloat { return 10.0 }
 
@@ -52,5 +54,25 @@ open class StickyHeaderContentTabViewController: UIViewController {
             scrollView.contentOffset = CGPoint(x: newValue.x, y: newValue.y - topInset)
         }
     }
+}
 
+// MARK: - UIScrollViewDelegate
+
+extension StickyHeaderContentTabViewController: UIScrollViewDelegate {
+
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollViewDelegate?.scrollViewDidScroll?(scrollView)
+    }
+
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        scrollViewDelegate?.scrollViewWillBeginDragging?(scrollView)
+    }
+
+    public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        scrollViewDelegate?.scrollViewDidEndDragging?(scrollView, willDecelerate: decelerate)
+    }
+
+    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        scrollViewDelegate?.scrollViewDidEndDecelerating?(scrollView)
+    }
 }
