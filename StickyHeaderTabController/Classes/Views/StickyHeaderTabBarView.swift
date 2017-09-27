@@ -18,7 +18,7 @@ public protocol StickyHeaderTabBarViewDataSource: class {
                                 titleAtIndex index: Int) -> String?
 }
 
-public class StickyHeaderTabBarView: UICollectionView {
+open class StickyHeaderTabBarView: UICollectionView {
 
     // MARK: - Public Properties
 
@@ -31,12 +31,29 @@ public class StickyHeaderTabBarView: UICollectionView {
         return 60.0
     }
 
+    public var bottomBorderColor: UIColor? {
+        get {
+            return bottomBorder.backgroundColor
+        }
+        set {
+            bottomBorder.backgroundColor = newValue
+        }
+    }
+
+    public var bottomBorderWidth: CGFloat = 1.0 {
+        didSet {
+            setNeedsLayout()
+        }
+    }
+
     // MARK: - Private Properties
 
     fileprivate let titleCellReuseIdentifier = "TitleCellReuseIdentifier"
     fileprivate let cellSpacing: CGFloat = 4.0
 
     private let flowLayout = UICollectionViewFlowLayout()
+
+    private let bottomBorder = UIView()
 
     // MARK: - Initialization
 
@@ -55,10 +72,11 @@ public class StickyHeaderTabBarView: UICollectionView {
     // MARK: - Setup
 
     private func commonInit() {
-        backgroundColor = .white
+        backgroundColor = UIColor(white: 0.97, alpha: 1.0)
 
         setUpCollectionView()
         setUpFlowLayout()
+        setUpBottomBorder()
     }
 
     private func setUpCollectionView() {
@@ -71,17 +89,29 @@ public class StickyHeaderTabBarView: UICollectionView {
         showsHorizontalScrollIndicator = false
         showsVerticalScrollIndicator = false
 
-        register(StickyHeaderTabBarViewCell.self,
-                 forCellWithReuseIdentifier: titleCellReuseIdentifier)
+        registerCellForReuse()
     }
 
     private func setUpFlowLayout() {
         flowLayout.scrollDirection = .horizontal
         flowLayout.minimumLineSpacing = cellSpacing
-        flowLayout.sectionInset = UIEdgeInsets(top: 0,
+        flowLayout.sectionInset = UIEdgeInsets(top: 0.0,
                                                left: cellSpacing,
-                                               bottom: 0,
+                                               bottom: 0.0,
                                                right: cellSpacing)
+    }
+
+    private func setUpBottomBorder() {
+        addSubview(bottomBorder)
+        bottomBorderWidth = 2.0
+        bottomBorderColor = UIColor(white: 0.92, alpha: 1.0)
+    }
+
+    // MARK: - Open Methods
+
+    open func registerCellForReuse() {
+        register(StickyHeaderTabBarViewCell.self,
+                 forCellWithReuseIdentifier: titleCellReuseIdentifier)
     }
 
     // MARK: - Public Methods
@@ -89,6 +119,23 @@ public class StickyHeaderTabBarView: UICollectionView {
     public func setTabIndex(_ tabIndex: Int, animated: Bool) {
         let newIndexPath = IndexPath(item: tabIndex, section: 0)
         selectItem(at: newIndexPath, animated: animated, scrollPosition: .bottom)
+    }
+
+    // MARK: - Private Methods
+
+    private func updateBottomBorderFrame() {
+        bottomBorder.frame = CGRect(x: 0,
+                                    y: bounds.height - bottomBorderWidth,
+                                    width: bounds.width,
+                                    height: bottomBorderWidth)
+    }
+
+    // MARK: - Override
+
+    override open func layoutSubviews() {
+        super.layoutSubviews()
+
+        updateBottomBorderFrame()
     }
 }
 
@@ -112,8 +159,8 @@ extension StickyHeaderTabBarView: UICollectionViewDataSource {
         return tabCount
     }
 
-    public func collectionView(_ collectionView: UICollectionView,
-                               cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    open func collectionView(_ collectionView: UICollectionView,
+                             cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let index = indexPath.item
         let title = tabDataSource?.stickyHeaderTabBarView(self, titleAtIndex: index)
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: titleCellReuseIdentifier,
@@ -127,15 +174,15 @@ extension StickyHeaderTabBarView: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegateFlowLayout
 
 extension StickyHeaderTabBarView: UICollectionViewDelegateFlowLayout {
-    public func collectionView(_ collectionView: UICollectionView,
-                               layout collectionViewLayout: UICollectionViewLayout,
-                               sizeForItemAt indexPath: IndexPath) -> CGSize {
+    open func collectionView(_ collectionView: UICollectionView,
+                             layout collectionViewLayout: UICollectionViewLayout,
+                             sizeForItemAt indexPath: IndexPath) -> CGSize {
         let index = indexPath.item
         let text = tabDataSource!.stickyHeaderTabBarView(self, titleAtIndex: index)!
         let naturalWidth = StickyHeaderTabBarViewCell.cellSize(for: text).width
 
         let numberOfTabs = CGFloat(collectionView.numberOfItems(inSection: 0))
-        let viewSizeWidth = (collectionView.bounds.width - (2 * cellSpacing)) / numberOfTabs
+        let viewSizeWidth = (collectionView.bounds.width - (2.0 * cellSpacing)) / numberOfTabs
 
         let width = max(naturalWidth, viewSizeWidth)
 

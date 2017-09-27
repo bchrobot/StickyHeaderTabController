@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Proper calculations for tab contentInset.
 - Scrolling of sticky components.
 - Synchronization of horizontal scrolling and tab selection.
+- Customization of `StickyHeaderTabBarView`.
 
 ### Changed
 - Updated copyright notices.

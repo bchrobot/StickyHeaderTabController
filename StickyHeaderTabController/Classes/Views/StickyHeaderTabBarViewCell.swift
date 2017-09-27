@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class StickyHeaderTabBarViewCell: UICollectionViewCell {
+open class StickyHeaderTabBarViewCell: UICollectionViewCell {
 
     // MARK: - Public Properties
 
@@ -21,14 +21,60 @@ public class StickyHeaderTabBarViewCell: UICollectionViewCell {
         }
     }
 
+    // MARK: - Propeties
+
+    public var selectedBackgroundColor: UIColor? = nil {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+
+    public var bottomBorderColor: UIColor? = nil {
+        didSet {
+            repaintElements()
+        }
+    }
+
+    public var bottomBorderWidth: CGFloat = 1 {
+        didSet {
+            setNeedsLayout()
+        }
+    }
+
+    public var textColor: UIColor? {
+        didSet {
+            repaintElements()
+        }
+    }
+
+    public var selectedTextColor: UIColor? {
+        didSet {
+            repaintElements()
+        }
+    }
+
+    public var font: UIFont = StickyHeaderTabBarViewCell.defaultTitleFont {
+        didSet {
+            repaintElements()
+        }
+    }
+
+    public var selectedFont: UIFont = StickyHeaderTabBarViewCell.defaultSelectedTitleFont {
+        didSet {
+            repaintElements()
+        }
+    }
+
     // MARK: - Private Properties
 
-    private static let titleFont = UIFont.systemFont(ofSize: 14)
-    private static let selectedTitleFont = UIFont.boldSystemFont(ofSize: 14)
+    private static let defaultTitleFont = UIFont.systemFont(ofSize: 14)
+    private static let defaultSelectedTitleFont = UIFont.boldSystemFont(ofSize: 14)
 
     // MARK: Views
 
     private let titleLabel = UILabel()
+
+    private let bottomBorder = UIView()
 
     // MARK: - Initialization
 
@@ -45,23 +91,34 @@ public class StickyHeaderTabBarViewCell: UICollectionViewCell {
     // MARK: - Setup
 
     private func commonInit() {
+        addSubview(titleLabel)
         setUpTitleLabel()
+        setUpBottomBorder()
     }
 
     private func setUpTitleLabel() {
         addSubview(titleLabel)
-        titleLabel.font = StickyHeaderTabBarViewCell.titleFont
+        titleLabel.font = StickyHeaderTabBarViewCell.defaultTitleFont
         titleLabel.textAlignment = .center
+    }
+
+    private func setUpBottomBorder() {
+        insertSubview(bottomBorder, at: 0)
     }
 
     // Overrides
 
-    public override func layoutSubviews() {
+    override open func layoutSubviews() {
         // Title label
         titleLabel.frame = CGRect(x: 0, y: 0, width: bounds.width, height: bounds.height)
+
+        bottomBorder.frame = CGRect(x: 0,
+                                    y: bounds.height - bottomBorderWidth,
+                                    width: bounds.width,
+                                    height: bottomBorderWidth)
     }
 
-    public override var isSelected: Bool {
+    override open var isSelected: Bool {
         didSet {
             repaintElements()
         }
@@ -70,13 +127,14 @@ public class StickyHeaderTabBarViewCell: UICollectionViewCell {
     // MARK: - Public Methods
 
     open static func cellSize(for text: String) -> CGSize {
-        return text.size(attributes: [NSFontAttributeName: StickyHeaderTabBarViewCell.titleFont])
+        return text.size(attributes: [NSFontAttributeName: StickyHeaderTabBarViewCell.defaultTitleFont])
     }
 
     /// Called when cell needs to be repainted. Notably when the cell has been selected
     open func repaintElements() {
-        titleLabel.font = isSelected
-            ? StickyHeaderTabBarViewCell.selectedTitleFont
-            : StickyHeaderTabBarViewCell.titleFont
+        titleLabel.font = isSelected ? selectedFont : font
+        titleLabel.textColor = isSelected ? selectedTextColor : textColor
+
+        bottomBorder.backgroundColor = isSelected ? bottomBorderColor : nil
     }
 }

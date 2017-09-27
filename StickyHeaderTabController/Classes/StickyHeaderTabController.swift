@@ -32,7 +32,11 @@ open class StickyHeaderTabController: UIViewController {
     }
 
     /// The tab bar showing the titles of each content tab.
-    public let tabBar = StickyHeaderTabBarView(frame: .zero)
+    public var tabBar: StickyHeaderTabBarView = StickyHeaderTabBarView(frame: .zero) {
+        didSet {
+            didSetTabBar(tabBar, oldValue: oldValue)
+        }
+    }
 
     /// The content tabs.
     public var tabs: [StickyHeaderContentTabViewController] = [] {
@@ -154,6 +158,13 @@ open class StickyHeaderTabController: UIViewController {
         updateCompoundHeaderHeight()
     }
 
+    private func didSetTabBar(_ tabBar: StickyHeaderTabBarView, oldValue: StickyHeaderTabBarView) {
+        oldValue.removeFromSuperview()
+        setUpTabBar()
+
+        updateCompoundHeaderHeight()
+    }
+
     private func didSetTabs(_ tabs: [StickyHeaderContentTabViewController],
                             oldValue: [StickyHeaderContentTabViewController]) {
         // Cancel current verticalPanRecognizer (if any)
@@ -211,13 +222,9 @@ open class StickyHeaderTabController: UIViewController {
 
         newHeaderHeight += tabBar.tabBarHeight
 
-        let isHeaderHeightDifferent = compoundHeaderHeight != newHeaderHeight
-
         compoundHeaderHeight = newHeaderHeight
 
-        if isHeaderHeightDifferent {
-            updateStickyFrames()
-        }
+        updateStickyFrames()
     }
 
     private func updateStickyFrames() {

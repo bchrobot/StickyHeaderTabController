@@ -14,8 +14,8 @@ class ExampleTabController: StickyHeaderTabController {
     // MARK: - Properties
     
     private let exampleHeader = ExampleStickyHeaderView()
-
     private let exampleHero = ExampleStickyHeroView()
+    private let exampleTabBar = ExampleTabBar(frame: .zero)
 
     // MARK: - ViewController lifecycle
 
@@ -32,6 +32,7 @@ class ExampleTabController: StickyHeaderTabController {
 
         stickyHeader = exampleHeader
         hero = exampleHero
+        tabBar = exampleTabBar
         tabs = [StatesTabViewController(), ColorsTabViewController()]
     }
 

@@ -13,6 +13,8 @@
 		2C225FEB1F799F0C005A00FA /* ExampleStickyHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C225FEA1F799F0C005A00FA /* ExampleStickyHeaderView.swift */; };
 		2C225FED1F799F2F005A00FA /* ExampleStickyHeroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C225FEC1F799F2F005A00FA /* ExampleStickyHeroView.swift */; };
 		2C2774F81F74502C0077439B /* StatesTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C2774F71F74502C0077439B /* StatesTabViewController.swift */; };
+		2C64015F1F7C27B60085400C /* ExampleTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C64015E1F7C27B60085400C /* ExampleTabBar.swift */; };
+		2C6401611F7C28800085400C /* ExampleTabBarViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C6401601F7C28800085400C /* ExampleTabBarViewCell.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ExampleTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ExampleTabController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
@@ -39,6 +41,8 @@
 		2C225FEC1F799F2F005A00FA /* ExampleStickyHeroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleStickyHeroView.swift; sourceTree = "<group>"; };
 		2C2774F41F7443750077439B /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = CHANGELOG.md; path = ../CHANGELOG.md; sourceTree = "<group>"; };
 		2C2774F71F74502C0077439B /* StatesTabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatesTabViewController.swift; sourceTree = "<group>"; };
+		2C64015E1F7C27B60085400C /* ExampleTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleTabBar.swift; sourceTree = "<group>"; };
+		2C6401601F7C28800085400C /* ExampleTabBarViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleTabBarViewCell.swift; sourceTree = "<group>"; };
 		414941D7D4DE5B265BECB7E5 /* Pods-StickyHeaderTabController_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StickyHeaderTabController_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-StickyHeaderTabController_Tests/Pods-StickyHeaderTabController_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		42C8CA37C40A0ED025263B3E /* Pods-StickyHeaderTabController_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StickyHeaderTabController_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-StickyHeaderTabController_Tests/Pods-StickyHeaderTabController_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		50A93FB9FB3C25DC60EAE8DB /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
@@ -99,6 +103,15 @@
 			path = Tabs;
 			sourceTree = "<group>";
 		};
+		2C64015D1F7C27A00085400C /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				2C64015E1F7C27B60085400C /* ExampleTabBar.swift */,
+				2C6401601F7C28800085400C /* ExampleTabBarViewCell.swift */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
@@ -126,6 +139,7 @@
 				607FACD51AFB9204008FA782 /* AppDelegate.swift */,
 				607FACD71AFB9204008FA782 /* ExampleTabController.swift */,
 				2C225FE91F799EE5005A00FA /* StickyViews */,
+				2C64015D1F7C27A00085400C /* TabBar */,
 				2C2774F61F74500B0077439B /* Tabs */,
 				607FACD91AFB9204008FA782 /* Main.storyboard */,
 				607FACDC1AFB9204008FA782 /* Images.xcassets */,
@@ -420,6 +434,8 @@
 				2C225FEB1F799F0C005A00FA /* ExampleStickyHeaderView.swift in Sources */,
 				2C2774F81F74502C0077439B /* StatesTabViewController.swift in Sources */,
 				2C167C7F1F7A9F680068FC62 /* ColorsTabViewController.swift in Sources */,
+				2C64015F1F7C27B60085400C /* ExampleTabBar.swift in Sources */,
+				2C6401611F7C28800085400C /* ExampleTabBarViewCell.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
