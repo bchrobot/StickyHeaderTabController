@@ -59,19 +59,19 @@ open class StickyHeaderContentTabViewController: UIViewController {
 
 extension StickyHeaderContentTabViewController: UIScrollViewDelegate {
 
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         scrollViewDelegate?.scrollViewDidScroll?(scrollView)
     }
 
-    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         scrollViewDelegate?.scrollViewWillBeginDragging?(scrollView)
     }
 
-    public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         scrollViewDelegate?.scrollViewDidEndDragging?(scrollView, willDecelerate: decelerate)
     }
 
-    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         scrollViewDelegate?.scrollViewDidEndDecelerating?(scrollView)
     }
 }

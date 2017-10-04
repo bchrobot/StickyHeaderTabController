@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'StickyHeaderTabController'
-  s.version          = '0.1.0'
+  s.version          = '0.0.1'
   s.summary          = 'Tabbed content controller with sticky header and hero.'
 
 # This description is used to generate tags and improve search results.
@@ -28,7 +28,7 @@ Tabbed content controller with sticky header and hero.
   s.source           = { :git => 'https://github.com/bchrobot/StickyHeaderTabController.git', :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/bchrobot'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '9.0'
 
   s.source_files = 'StickyHeaderTabController/Classes/**/*'
 

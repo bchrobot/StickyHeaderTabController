@@ -39,7 +39,7 @@ class ExampleTabController: StickyHeaderTabController {
     // Private Methods
 
     fileprivate func updateAvatarSize() {
-        let maxValue = exampleHeader.headerHeight
+        let maxValue = exampleHeader.bounds.height
         let minValue = exampleHeader.pinnedHeight
         let currentValue = exampleHero.frame.origin.y
 

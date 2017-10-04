@@ -18,23 +18,23 @@ open class StickyHeaderTabController: UIViewController {
     public weak var delegate: StickyHeaderTabControllerDelegate?
 
     /// The sticky header view.
-    public var stickyHeader: StickyHeaderView? {
+    public var stickyHeader: StickyHeaderView = StickyHeaderView() {
         didSet {
-            didSetStickyHeader(stickyHeader, oldValue: oldValue)
+            didSetStickyHeader(stickyHeader, oldHeader: oldValue)
         }
     }
 
     /// The optional "hero" view between the header and the tab bar.
-    public var hero: StickyHeaderHeroView? {
+    public var hero: UIView = UIView() {
         didSet {
-            didSetHero(hero, oldValue: oldValue)
+            didSetHero(hero, oldHero: oldValue)
         }
     }
 
     /// The tab bar showing the titles of each content tab.
     public var tabBar: StickyHeaderTabBarView = StickyHeaderTabBarView(frame: .zero) {
         didSet {
-            didSetTabBar(tabBar, oldValue: oldValue)
+            didSetTabBar(tabBar, oldTabBar: oldValue)
         }
     }
 
@@ -74,6 +74,9 @@ open class StickyHeaderTabController: UIViewController {
             updateInsetForCompoundHeaderHeight(compoundHeaderHeight)
         }
     }
+    private var lastHeaderHeight: CGFloat = 0.0
+    private var lastHeroHeight: CGFloat = 0.0
+    private var lastTabBarHeight: CGFloat = 0.0
 
     /// This represents what the offset would be if it were measured from the bottom of the tab bar.
     /// It does not take into account the sticky header, hero, or tab bar height.
@@ -84,6 +87,21 @@ open class StickyHeaderTabController: UIViewController {
     fileprivate weak var activeVerticalTab: StickyHeaderContentTabViewController?
 
     private let verticalPanRecognizer = UIPanGestureRecognizer()
+
+    // MARK: AutoLayout magic
+
+    /// Layout guide for positioning sticky elements
+    private let stickyLayoutGuide = UILayoutGuide()
+
+    /// Top offset for `stickyLayoutGuide`. Used in conjunction with scrolling of tab content.
+    private var stickyGuideTopConstraint: NSLayoutConstraint!
+
+    /// Height of `stickyLayoutGuide`. Updated from `viewDidLayoutSubviews()` if any sticky view
+    /// has changed it's height.
+    private var stickyGuideHeightConstraint: NSLayoutConstraint!
+
+    /// Offset between the top of `stickyLayoutGuide` and the top of `hero` view.
+    private var heroTopOffsetConstraint: NSLayoutConstraint!
 
     // MARK: Views
 
@@ -104,7 +122,18 @@ open class StickyHeaderTabController: UIViewController {
     private func setUpCommonElements() {
         setUpScrollView()
         setUpVerticalPanRecognizer()
-        setUpTabBar()
+        setUpLayoutGuide()
+
+        [stickyHeader, hero, tabBar].forEach { stickyView in
+            view.addSubview(stickyView)
+        }
+
+        didSetStickyHeader(stickyHeader, oldHeader: stickyHeader)
+        didSetHero(hero, oldHero: hero)
+        didSetTabBar(tabBar, oldTabBar: tabBar)
+
+        // Must be called first to sync scrollViews
+        updateCompoundHeaderHeight()
     }
 
     private func setUpScrollView() {
@@ -118,9 +147,6 @@ open class StickyHeaderTabController: UIViewController {
         horizontalScrollView.frame = view.bounds
         horizontalScrollView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
-        // Must be called first to sync scrollViews
-        updateCompoundHeaderHeight()
-
         // view.insertSubview(gradientBackground, at: 0)
     }
 
@@ -130,39 +156,93 @@ open class StickyHeaderTabController: UIViewController {
         verticalPanRecognizer.addTarget(self, action: #selector(handlePan(_:)))
     }
 
-    private func setUpTabBar() {
-        view.addSubview(tabBar)
-        tabBar.tabDelegate = self
-        tabBar.tabDataSource = self
+    private func setUpLayoutGuide() {
+        view.addLayoutGuide(stickyLayoutGuide)
+        stickyLayoutGuide.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        stickyLayoutGuide.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+
+        // Top offset
+        stickyGuideTopConstraint = stickyLayoutGuide.topAnchor.constraint(equalTo: view.topAnchor)
+        stickyGuideTopConstraint.isActive = true
+
+        // Height
+        stickyGuideHeightConstraint = stickyLayoutGuide.heightAnchor.constraint(equalToConstant: 0)
+        stickyGuideHeightConstraint.isActive = true
     }
 
     // MARK: - Private Methods
 
-    private func didSetStickyHeader(_ header: StickyHeaderView?, oldValue: StickyHeaderView?) {
-        oldValue?.removeFromSuperview()
+    private func didSetStickyHeader(_ newHeader: StickyHeaderView, oldHeader: StickyHeaderView) {
+        oldHeader.removeFromSuperview()
+        view.addSubview(newHeader)
 
-        if let newHeader = stickyHeader {
-            view.addSubview(newHeader)
-        }
+        newHeader.translatesAutoresizingMaskIntoConstraints = false
+        newHeader.leadingAnchor.constraint(equalTo: stickyLayoutGuide.leadingAnchor).isActive = true
+        newHeader.trailingAnchor.constraint(equalTo: stickyLayoutGuide.trailingAnchor).isActive = true
+
+        let topStretchConstraint = newHeader.topAnchor.constraint(lessThanOrEqualTo: view.topAnchor)
+        topStretchConstraint.isActive = true
+
+        let pinnedConstraint = newHeader.bottomAnchor.constraint(greaterThanOrEqualTo: view.topAnchor)
+        pinnedConstraint.constant = newHeader.pinnedHeight
+        pinnedConstraint.isActive = true
+
+        setBottomStretchConstraints()
+        setTabBarConstraints()
 
         updateCompoundHeaderHeight()
     }
 
-    private func didSetHero(_ hero: StickyHeaderHeroView?, oldValue: StickyHeaderHeroView?) {
-        oldValue?.removeFromSuperview()
+    private func didSetHero(_ newHero: UIView, oldHero: UIView) {
+        oldHero.removeFromSuperview()
+        view.addSubview(newHero)
 
-        if let newHero = hero {
-            view.addSubview(newHero)
-        }
+        newHero.translatesAutoresizingMaskIntoConstraints = false
+        newHero.leadingAnchor.constraint(equalTo: stickyLayoutGuide.leadingAnchor).isActive = true
+        newHero.trailingAnchor.constraint(equalTo: stickyLayoutGuide.trailingAnchor).isActive = true
+
+        heroTopOffsetConstraint = newHero.topAnchor.constraint(equalTo: stickyLayoutGuide.topAnchor)
+        heroTopOffsetConstraint.constant = stickyHeader.bounds.height
+        heroTopOffsetConstraint.isActive = true
+
+        setBottomStretchConstraints()
+        setTabBarConstraints()
 
         updateCompoundHeaderHeight()
     }
 
-    private func didSetTabBar(_ tabBar: StickyHeaderTabBarView, oldValue: StickyHeaderTabBarView) {
-        oldValue.removeFromSuperview()
-        setUpTabBar()
+    private func didSetTabBar(_ newTabBar: StickyHeaderTabBarView,
+                              oldTabBar: StickyHeaderTabBarView) {
+        oldTabBar.removeFromSuperview()
+        view.addSubview(tabBar)
+
+        tabBar.tabDelegate = self
+        tabBar.tabDataSource = self
+
+        tabBar.translatesAutoresizingMaskIntoConstraints = false
+        tabBar.leadingAnchor.constraint(equalTo: stickyLayoutGuide.leadingAnchor).isActive = true
+        tabBar.trailingAnchor.constraint(equalTo: stickyLayoutGuide.trailingAnchor).isActive = true
+
+        setTabBarConstraints()
 
         updateCompoundHeaderHeight()
+    }
+
+    private func setBottomStretchConstraints() {
+        let bottomStretchConstraint = stickyHeader.bottomAnchor.constraint(equalTo: hero.topAnchor)
+        bottomStretchConstraint.priority = 750
+        bottomStretchConstraint.isActive = true
+    }
+
+    private func setTabBarConstraints() {
+        let tabBarTopConstraint = tabBar.topAnchor.constraint(equalTo: hero.bottomAnchor)
+        tabBarTopConstraint.priority = 500.0
+        tabBarTopConstraint.isActive = true
+
+        let tabBarPinnedConstraint =
+            tabBar.topAnchor.constraint(greaterThanOrEqualTo: stickyHeader.bottomAnchor)
+        tabBarPinnedConstraint.priority = UILayoutPriorityDefaultHigh
+        tabBarPinnedConstraint.isActive = true
     }
 
     private func didSetTabs(_ tabs: [StickyHeaderContentTabViewController],
@@ -212,15 +292,9 @@ open class StickyHeaderTabController: UIViewController {
     fileprivate func updateCompoundHeaderHeight() {
         var newHeaderHeight: CGFloat = 0.0
 
-        if let header = stickyHeader {
-            newHeaderHeight += header.headerHeight
-        }
-
-        if let hero = self.hero {
-            newHeaderHeight += hero.heroHeight
-        }
-
-        newHeaderHeight += tabBar.tabBarHeight
+        newHeaderHeight += stickyHeader.bounds.height
+        newHeaderHeight += hero.bounds.height
+        newHeaderHeight += tabBar.bounds.height
 
         compoundHeaderHeight = newHeaderHeight
 
@@ -228,63 +302,26 @@ open class StickyHeaderTabController: UIViewController {
     }
 
     private func updateStickyFrames() {
-        var currentYOffset: CGFloat = -trueScrollOffset
-        let width = view.bounds.width
+        let currentYOffset: CGFloat = -trueScrollOffset
 
-        // Sticky Header
-        if let header = stickyHeader {
-            // Stretch instead of scrolling downward
-            var headerTop = min(0.0, currentYOffset)
-            let stretchHeight = max(0.0, currentYOffset)
+        // Pin header to top
+        var headerTop = min(0.0, currentYOffset)
+        let minTop = stickyHeader.pinnedHeight - stickyHeader.bounds.height
+        let isPinned = minTop > headerTop
+        headerTop = max(headerTop, minTop)
 
-            // Pin header to top
-            let minTop = header.pinnedHeight - header.headerHeight
-            let isPinned = minTop > headerTop
-            headerTop = max(headerTop, minTop)
+        let headerIndex = view.subviews.index(of: stickyHeader)!
+        let heroIndex = view.subviews.index(of: hero)!
 
-            if let hero = self.hero {
-                let headerIndex = view.subviews.index(of: header)!
-                let heroIndex = view.subviews.index(of: hero)!
-
-                if isPinned && headerIndex < heroIndex {
-                    // Ensure header is on top
-                    view.exchangeSubview(at: headerIndex, withSubviewAt: heroIndex)
-                } else if !isPinned && headerIndex > heroIndex {
-                    // Ensure hero is on top
-                    view.exchangeSubview(at: headerIndex, withSubviewAt: heroIndex)
-                }
-            }
-
-            let headerFrame = CGRect(x: 0.0,
-                                     y: headerTop,
-                                     width: width,
-                                     height: header.headerHeight + stretchHeight)
-            header.frame = headerFrame
-            currentYOffset += header.headerHeight
+        if isPinned && headerIndex < heroIndex {
+            // Ensure header is on top
+            view.exchangeSubview(at: headerIndex, withSubviewAt: heroIndex)
+        } else if !isPinned && headerIndex > heroIndex {
+            // Ensure hero is on top
+            view.exchangeSubview(at: headerIndex, withSubviewAt: heroIndex)
         }
 
-        // Hero
-        if let hero = self.hero {
-            let heroFrame = CGRect(x: 0.0,
-                                   y: currentYOffset,
-                                   width: width,
-                                   height: hero.heroHeight)
-            hero.frame = heroFrame
-            currentYOffset += hero.heroHeight
-        }
-
-        // Update tab bar
-        var tabBarTop = currentYOffset
-        if let header = self.stickyHeader {
-            let headerBottom = header.frame.origin.y + header.frame.size.height
-            tabBarTop = max(tabBarTop, headerBottom)
-        }
-        tabBar.frame = CGRect(x: 0.0,
-                              y: tabBarTop,
-                              width: width,
-                              height: tabBar.tabBarHeight)
-
-        // TODO: Pass updated offset to all tabs (should really be in "scrolled" method)
+        stickyGuideTopConstraint?.constant = currentYOffset
     }
 
     /// Update the content inset + offset of all tabs for a change in compound header height.
@@ -324,7 +361,7 @@ open class StickyHeaderTabController: UIViewController {
     // MARK: - Overrides
 
     open override func viewDidLayoutSubviews() {
-        // Position tabs
+        // `view` bounds have been set, so we need to position and size our tabs
         let tabSize = view.bounds
         horizontalScrollView.contentSize = CGSize(width: CGFloat(tabs.count) * tabSize.width,
                                                   height: tabSize.height)
@@ -335,6 +372,36 @@ open class StickyHeaderTabController: UIViewController {
                                     y: 0,
                                     width: tabSize.width,
                                     height: tabSize.height)
+        }
+
+        var doesNeedUpdate = false
+        if stickyHeader.bounds.height != lastHeaderHeight {
+            doesNeedUpdate = true
+
+            heroTopOffsetConstraint.constant = stickyHeader.bounds.height
+        }
+        lastHeaderHeight = stickyHeader.bounds.height
+
+        if hero.bounds.height != lastHeroHeight {
+            doesNeedUpdate = true
+        }
+        lastHeroHeight = hero.bounds.height
+
+        if tabBar.bounds.height != lastTabBarHeight {
+            doesNeedUpdate = true
+        }
+        lastTabBarHeight = tabBar.bounds.height
+
+        if doesNeedUpdate {
+            var newHeaderHeight: CGFloat = 0.0
+
+            newHeaderHeight += stickyHeader.bounds.height
+            newHeaderHeight += hero.bounds.height
+            newHeaderHeight += tabBar.bounds.height
+
+            compoundHeaderHeight = newHeaderHeight
+
+            stickyGuideHeightConstraint.constant = compoundHeaderHeight
         }
     }
 
@@ -374,15 +441,6 @@ extension StickyHeaderTabController: StickyHeaderTabBarViewDataSource {
 extension StickyHeaderTabController: StickyHeaderViewDelegate {
     public func stickyHeaderView(_ stickyHeaderView: StickyHeaderView,
                                  didChangeHeight height: CGFloat) {
-        updateCompoundHeaderHeight()
-    }
-}
-
-// MARK: - StickyHeaderHeroViewDelegate
-
-extension StickyHeaderTabController: StickyHeaderHeroViewDelegate {
-    public func stickyHeaderHeroView(_ stickyHeaderHeroView: StickyHeaderHeroView,
-                                     didChangeHeight height: CGFloat) {
         updateCompoundHeaderHeight()
     }
 }

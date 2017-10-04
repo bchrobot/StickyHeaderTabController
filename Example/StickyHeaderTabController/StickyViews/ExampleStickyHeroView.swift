@@ -9,7 +9,7 @@
 import UIKit
 import StickyHeaderTabController
 
-class ExampleStickyHeroView: StickyHeaderHeroView {
+class ExampleStickyHeroView: UIView {
 
     // MARK: - Properties
 
@@ -41,6 +41,8 @@ class ExampleStickyHeroView: StickyHeaderHeroView {
     // MARK: - Setup
 
     private func commonSetup() {
+        heightAnchor.constraint(equalToConstant: 200.0).isActive = true
+
         backgroundColor = UIColor(red: 0.0, green: 0.4, blue: 0.4, alpha: 1.0)
 
         setUpAvatar()

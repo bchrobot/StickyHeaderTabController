@@ -25,12 +25,6 @@ open class StickyHeaderTabBarView: UICollectionView {
     public weak var tabDelegate: StickyHeaderTabBarViewDelegate?
     public weak var tabDataSource: StickyHeaderTabBarViewDataSource?
 
-    /// A kind of hacky way of letting view specify its height.
-    /// TODO: refactor in terms of preferredContentSize?
-    open var tabBarHeight: CGFloat {
-        return 60.0
-    }
-
     public var bottomBorderColor: UIColor? {
         get {
             return bottomBorder.backgroundColor
@@ -72,6 +66,8 @@ open class StickyHeaderTabBarView: UICollectionView {
     // MARK: - Setup
 
     private func commonInit() {
+        heightAnchor.constraint(equalToConstant: 60.0).isActive = true
+
         backgroundColor = UIColor(white: 0.97, alpha: 1.0)
 
         setUpCollectionView()

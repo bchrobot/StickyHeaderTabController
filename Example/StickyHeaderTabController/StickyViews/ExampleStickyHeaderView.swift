@@ -13,6 +13,10 @@ class ExampleStickyHeaderView: StickyHeaderView {
 
     // MARK: - Properties
 
+    override public var pinnedHeight: CGFloat {
+        return 60.0
+    }
+
     var percentVisibleName: CGFloat = 0.0 {
         didSet {
             if percentVisibleName != oldValue {
@@ -46,6 +50,10 @@ class ExampleStickyHeaderView: StickyHeaderView {
     // MARK: - Setup
 
     private func commonSetup() {
+        let heightConstraint = heightAnchor.constraint(equalToConstant: 170.0)
+        heightConstraint.priority = 500.0
+        heightConstraint.isActive = true
+
         setUpAvatar()
         setUpBlur()
         setUpNameLabel()
