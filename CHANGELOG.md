@@ -29,5 +29,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - This CHANGELOG file.
 
-[Unreleased]: https://github.com/bchrobot/StickyHeaderTabController/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/bchrobot/StickyHeaderTabController/compare/v0.0.1...v0.1.0
+[Unreleased]: https://github.com/bchrobot/StickyHeaderTabController/compare/0.1.0...HEAD
+[0.1.0]: https://github.com/bchrobot/StickyHeaderTabController/compare/0.0.1...0.1.0
