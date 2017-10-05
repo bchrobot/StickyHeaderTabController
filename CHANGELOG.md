@@ -17,9 +17,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Updated copyright notices.
+- TabBar bottom border is now drawn rather than it's own subview.
 
 ### Fixed
 - Vertical scrolling of tabs within horizontal container.
+- Tab bar width calculation.
 
 ## 0.0.1 - 2017-09-21
 ### Added

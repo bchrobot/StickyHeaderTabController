@@ -20,6 +20,19 @@ it, simply add the following line to your Podfile:
 pod 'StickyHeaderTabController'
 ```
 
+## Usage
+
+### StickyHeaderView
+- width is set by `StickyHeaderTabController`
+- height should be set by you
+    - must not have priority >= 700 in order for stretch on vertical bounce to work.
+    - be careful of compression resistance of subviews, especially imageviews.
+
+### StickyHeroView
+- width is set by `StickyHeaderTabController`
+- height should be set by you
+    - must not have any priorities lower than 250.
+
 ## Author
 
 Benjamin Chrobot, benjamin.chrobot@alum.mit.edu

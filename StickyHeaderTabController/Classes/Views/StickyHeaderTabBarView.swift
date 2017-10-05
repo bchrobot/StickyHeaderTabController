@@ -26,17 +26,14 @@ open class StickyHeaderTabBarView: UICollectionView {
     public weak var tabDataSource: StickyHeaderTabBarViewDataSource?
 
     public var bottomBorderColor: UIColor? {
-        get {
-            return bottomBorder.backgroundColor
-        }
-        set {
-            bottomBorder.backgroundColor = newValue
+        didSet {
+            setNeedsDisplay()
         }
     }
 
     public var bottomBorderWidth: CGFloat = 1.0 {
         didSet {
-            setNeedsLayout()
+            setNeedsDisplay()
         }
     }
 
@@ -46,8 +43,6 @@ open class StickyHeaderTabBarView: UICollectionView {
     fileprivate let cellSpacing: CGFloat = 4.0
 
     private let flowLayout = UICollectionViewFlowLayout()
-
-    private let bottomBorder = UIView()
 
     // MARK: - Initialization
 
@@ -72,7 +67,6 @@ open class StickyHeaderTabBarView: UICollectionView {
 
         setUpCollectionView()
         setUpFlowLayout()
-        setUpBottomBorder()
     }
 
     private func setUpCollectionView() {
@@ -97,12 +91,6 @@ open class StickyHeaderTabBarView: UICollectionView {
                                                right: cellSpacing)
     }
 
-    private func setUpBottomBorder() {
-        addSubview(bottomBorder)
-        bottomBorderWidth = 2.0
-        bottomBorderColor = UIColor(white: 0.92, alpha: 1.0)
-    }
-
     // MARK: - Open Methods
 
     open func registerCellForReuse() {
@@ -117,21 +105,23 @@ open class StickyHeaderTabBarView: UICollectionView {
         selectItem(at: newIndexPath, animated: animated, scrollPosition: .bottom)
     }
 
-    // MARK: - Private Methods
-
-    private func updateBottomBorderFrame() {
-        bottomBorder.frame = CGRect(x: 0,
-                                    y: bounds.height - bottomBorderWidth,
-                                    width: bounds.width,
-                                    height: bottomBorderWidth)
-    }
-
     // MARK: - Override
 
-    override open func layoutSubviews() {
-        super.layoutSubviews()
+    open override func draw(_ rect: CGRect) {
+        guard let borderColor = bottomBorderColor, bottomBorderWidth > 0 else {
+            super.draw(rect)
 
-        updateBottomBorderFrame()
+            return
+        }
+
+        let borderRect = CGRect(x: 0,
+                                y: rect.height - bottomBorderWidth,
+                                width: rect.width,
+                                height: rect.width)
+        let borderPath = UIBezierPath(rect: borderRect)
+
+        borderColor.set()
+        borderPath.fill()
     }
 }
 
@@ -178,7 +168,8 @@ extension StickyHeaderTabBarView: UICollectionViewDelegateFlowLayout {
         let naturalWidth = StickyHeaderTabBarViewCell.cellSize(for: text).width
 
         let numberOfTabs = CGFloat(collectionView.numberOfItems(inSection: 0))
-        let viewSizeWidth = (collectionView.bounds.width - (2.0 * cellSpacing)) / numberOfTabs
+        let spacingSumSize = CGFloat(numberOfTabs + 1) * cellSpacing
+        let viewSizeWidth = (collectionView.bounds.width - spacingSumSize) / numberOfTabs
 
         let width = max(naturalWidth, viewSizeWidth)
 

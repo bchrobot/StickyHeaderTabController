@@ -134,6 +134,9 @@ open class StickyHeaderTabController: UIViewController {
 
         // Must be called first to sync scrollViews
         updateCompoundHeaderHeight()
+
+        // Correct layering of header and hero
+        updateStickyViewLayering()
     }
 
     private func setUpScrollView() {
@@ -236,7 +239,7 @@ open class StickyHeaderTabController: UIViewController {
 
     private func setTabBarConstraints() {
         let tabBarTopConstraint = tabBar.topAnchor.constraint(equalTo: hero.bottomAnchor)
-        tabBarTopConstraint.priority = 500.0
+        tabBarTopConstraint.priority = 250.0
         tabBarTopConstraint.isActive = true
 
         let tabBarPinnedConstraint =
@@ -297,11 +300,9 @@ open class StickyHeaderTabController: UIViewController {
         newHeaderHeight += tabBar.bounds.height
 
         compoundHeaderHeight = newHeaderHeight
-
-        updateStickyFrames()
     }
 
-    private func updateStickyFrames() {
+    private func updateStickyViewLayering() {
         let currentYOffset: CGFloat = -trueScrollOffset
 
         // Pin header to top
@@ -320,8 +321,6 @@ open class StickyHeaderTabController: UIViewController {
             // Ensure hero is on top
             view.exchangeSubview(at: headerIndex, withSubviewAt: heroIndex)
         }
-
-        stickyGuideTopConstraint?.constant = currentYOffset
     }
 
     /// Update the content inset + offset of all tabs for a change in compound header height.
@@ -333,7 +332,9 @@ open class StickyHeaderTabController: UIViewController {
 
     /// Very much a WIP menthod.
     fileprivate func handleVerticalScroll() {
-        updateStickyFrames()
+        updateStickyViewLayering()
+
+        stickyGuideTopConstraint?.constant = -trueScrollOffset
 
         let offsetY = trueScrollOffset - compoundHeaderHeight
         for tab in tabs {
@@ -375,7 +376,8 @@ open class StickyHeaderTabController: UIViewController {
         }
 
         var doesNeedUpdate = false
-        if stickyHeader.bounds.height != lastHeaderHeight {
+        let isBouncing = trueScrollOffset < 0
+        if stickyHeader.bounds.height != lastHeaderHeight && !isBouncing {
             doesNeedUpdate = true
 
             heroTopOffsetConstraint.constant = stickyHeader.bounds.height
