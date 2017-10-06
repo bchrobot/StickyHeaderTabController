@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.2.1] - 2017-10-06
+### Fixed
+- Pod spec screenshot location.
+
 ## [0.2.0] - 2017-10-06
 ### Added
 - `stickyHeaderTabController(_, didUpdateCompoundHeaderHeight:)` delegate method.
@@ -37,6 +41,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - This CHANGELOG file.
 
-[Unreleased]: https://github.com/bchrobot/StickyHeaderTabController/compare/0.2.0...HEAD
+[Unreleased]: https://github.com/bchrobot/StickyHeaderTabController/compare/0.2.1...HEAD
+[0.2.1]: https://github.com/bchrobot/StickyHeaderTabController/compare/0.2.0...0.2.1
 [0.2.0]: https://github.com/bchrobot/StickyHeaderTabController/compare/0.1.0...0.2.0
 [0.1.0]: https://github.com/bchrobot/StickyHeaderTabController/compare/0.0.1...0.1.0

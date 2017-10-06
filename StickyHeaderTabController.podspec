@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'StickyHeaderTabController'
-  s.version          = '0.2.0'
+  s.version          = '0.2.1'
   s.summary          = 'Tabbed content controller with sticky header and hero.'
 
 # This description is used to generate tags and improve search results.
@@ -22,7 +22,10 @@ Twitter profile-inspired tabbed content controller with sticky header and hero.
                        DESC
 
   s.homepage         = 'https://github.com/bchrobot/StickyHeaderTabController'
-  s.screenshots      = 'https://github.com/slackhq/SlackTextViewController/raw/master/Screenshots/screenshot_01.png', 'https://github.com/slackhq/SlackTextViewController/raw/master/Screenshots/screenshot_02.png', 'https://github.com/slackhq/SlackTextViewController/raw/master/Screenshots/screenshot_03.png', 'https://github.com/slackhq/SlackTextViewController/raw/master/Screenshots/screenshot_04.png'
+  s.screenshots      = ['https://github.com/bchrobot/StickyHeaderTabController/raw/master/Screenshots/screenshot_01.png',
+                        'https://github.com/bchrobot/StickyHeaderTabController/raw/master/Screenshots/screenshot_02.png',
+                        'https://github.com/bchrobot/StickyHeaderTabController/raw/master/Screenshots/screenshot_03.png',
+                        'https://github.com/bchrobot/StickyHeaderTabController/raw/master/Screenshots/screenshot_04.png']
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'Benjamin Chrobot' => 'benjamin.chrobot@alum.mit.edu' }
   s.source           = { :git => 'https://github.com/bchrobot/StickyHeaderTabController.git', :tag => s.version.to_s }
