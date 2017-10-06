@@ -19,6 +19,14 @@ open class StickyHeaderContentTabViewController: UIViewController {
     /// Set the bottom inset for the scrollView. This will be used to calculate the "true" inset.
     open var bottomInset: CGFloat { return 10.0 }
 
+    private var supplementalBottomInset: CGFloat = 0.0 {
+        didSet {
+            if oldValue != supplementalBottomInset {
+                updateContentInset()
+            }
+        }
+    }
+
     /// Generic access to tab's content `scrollView`.
     open var scrollView: UIScrollView {
         fatalError("subclasses must override this property!")
@@ -26,32 +34,41 @@ open class StickyHeaderContentTabViewController: UIViewController {
 
     /// This is the "opaque" content inset value. Setting this will add the appropriate inset for
     /// the specific tab (as defined by `topInset` and `bottomInset`).
-    public var contentInset: UIEdgeInsets {
-        get {
-            let trueInset = scrollView.contentInset
-            return UIEdgeInsets(top: trueInset.top - topInset,
-                                left: trueInset.left,
-                                bottom: trueInset.bottom - bottomInset,
-                                right: trueInset.right)
-        }
-        set {
-            scrollView.contentInset = UIEdgeInsets(top: newValue.top + topInset,
-                                                   left: newValue.left,
-                                                   bottom: newValue.bottom + bottomInset,
-                                                   right: newValue.right)
+    public var contentInset: UIEdgeInsets = .zero {
+        didSet {
+            updateContentInset()
         }
     }
 
     /// This is the "opaque" content offset value. Setting this will add the appropriate offset for
     /// the specific tab (as defined by `topInset` and `bottomInset`).
-    public var contentOffset: CGPoint {
-        get {
-            let trueOffset = scrollView.contentOffset
-            return CGPoint(x: trueOffset.x, y: trueOffset.y + topInset)
+    public var contentOffset: CGPoint = .zero {
+        didSet {
+            updateContentOffset()
         }
-        set {
-            scrollView.contentOffset = CGPoint(x: newValue.x, y: newValue.y - topInset)
-        }
+    }
+
+    // MARK: - Private Methods
+
+    private func updateContentInset() {
+        let newBottomInset = contentInset.bottom + bottomInset + supplementalBottomInset
+        scrollView.contentInset = UIEdgeInsets(top: contentInset.top + topInset,
+                                               left: contentInset.left,
+                                               bottom: newBottomInset,
+                                               right: contentInset.right)
+    }
+
+    private func updateContentOffset() {
+        let newOffsetY = contentOffset.y - topInset
+        scrollView.contentOffset.y = newOffsetY
+        updateSupplementalInsetForOffsetY(newOffsetY)
+    }
+
+    fileprivate func updateSupplementalInsetForOffsetY(_ offsetY: CGFloat) {
+        let contentBottomPosition = scrollView.contentSize.height - offsetY
+        let adjustedBottomPosition = contentBottomPosition + bottomInset
+
+        supplementalBottomInset = max(0, view.bounds.height - adjustedBottomPosition)
     }
 }
 
@@ -61,6 +78,13 @@ extension StickyHeaderContentTabViewController: UIScrollViewDelegate {
 
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
         scrollViewDelegate?.scrollViewDidScroll?(scrollView)
+
+        let offsetY = scrollView.contentOffset.y
+        let insetBottom = scrollView.contentInset.bottom
+        let contentBottomPosition = scrollView.contentSize.height + insetBottom - offsetY
+        if contentBottomPosition > view.bounds.height {
+            updateSupplementalInsetForOffsetY(scrollView.contentOffset.y)
+        }
     }
 
     open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {

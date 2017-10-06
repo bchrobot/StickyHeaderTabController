@@ -7,8 +7,10 @@
 
 import UIKit
 
-public protocol StickyHeaderTabControllerDelegate: class {
-    func stickyHeaderTabControllerDidScrollVertically(_ controller: StickyHeaderTabController)
+@objc public protocol StickyHeaderTabControllerDelegate: class {
+    @objc optional func stickyHeaderTabController(_ controller: StickyHeaderTabController,
+                                            didUpdateCompoundHeaderHeight headerHeight: CGFloat)
+    @objc optional func stickyHeaderTabControllerDidScrollVertically(_ controller: StickyHeaderTabController)
 }
 
 open class StickyHeaderTabController: UIViewController {
@@ -71,6 +73,7 @@ open class StickyHeaderTabController: UIViewController {
     /// Could instead be a calculated variable, but then we lose the `didSet` functionality.
     fileprivate var compoundHeaderHeight: CGFloat = 0.0 {
         didSet {
+            delegate?.stickyHeaderTabController?(self, didUpdateCompoundHeaderHeight: compoundHeaderHeight)
             updateInsetForCompoundHeaderHeight(compoundHeaderHeight)
         }
     }
@@ -86,7 +89,7 @@ open class StickyHeaderTabController: UIViewController {
     /// gesture began.
     fileprivate weak var activeVerticalTab: StickyHeaderContentTabViewController?
 
-    private let verticalPanRecognizer = UIPanGestureRecognizer()
+    fileprivate let verticalPanRecognizer = UIPanGestureRecognizer()
 
     // MARK: AutoLayout magic
 
@@ -149,8 +152,6 @@ open class StickyHeaderTabController: UIViewController {
 
         horizontalScrollView.frame = view.bounds
         horizontalScrollView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-
-        // view.insertSubview(gradientBackground, at: 0)
     }
 
     private func setUpVerticalPanRecognizer() {
@@ -337,14 +338,19 @@ open class StickyHeaderTabController: UIViewController {
         stickyGuideTopConstraint?.constant = -trueScrollOffset
 
         let offsetY = trueScrollOffset - compoundHeaderHeight
-        for tab in tabs {
-            if tab != activeVerticalTab {
-                // TODO: Refine this to account for differences in `contentSize`
-                tab.contentOffset = CGPoint(x: 0, y: offsetY)
+        let isTabBarPinned = tabBar.frame.origin.y <= stickyHeader.pinnedHeight
+        let otherTabs = tabs.filter { tab -> Bool in tab != activeVerticalTab }
+        for otherTab in otherTabs {
+            var newOffsetY = offsetY
+            if isTabBarPinned {
+                let tabBottom = tabBar.frame.origin.y + tabBar.frame.height
+                newOffsetY = max(otherTab.contentOffset.y, -tabBottom)
             }
+
+            otherTab.contentOffset = CGPoint(x: 0, y: newOffsetY)
         }
 
-        delegate?.stickyHeaderTabControllerDidScrollVertically(self)
+        delegate?.stickyHeaderTabControllerDidScrollVertically?(self)
     }
 
     fileprivate func scrollToTabIndex(_ tabIndex: Int, animated: Bool = true) {
@@ -423,6 +429,7 @@ open class StickyHeaderTabController: UIViewController {
 extension StickyHeaderTabController: StickyHeaderTabBarViewDelegate {
     public func stickyHeaderTabBarView(_ stickyHeaderTabBarView: StickyHeaderTabBarView,
                                 tabSelectedAtIndex index: Int) {
+        verticalPanRecognizer.cancelCurrentGesture()
         scrollToTabIndex(index, animated: true)
     }
 }
@@ -435,15 +442,6 @@ extension StickyHeaderTabController: StickyHeaderTabBarViewDataSource {
     public func stickyHeaderTabBarView(_ stickyHeaderTabBarView: StickyHeaderTabBarView,
                                        titleAtIndex index: Int) -> String? {
         return tabs[index].title
-    }
-}
-
-// MARK: - StickyHeaderViewDelegate
-
-extension StickyHeaderTabController: StickyHeaderViewDelegate {
-    public func stickyHeaderView(_ stickyHeaderView: StickyHeaderView,
-                                 didChangeHeight height: CGFloat) {
-        updateCompoundHeaderHeight()
     }
 }
 
@@ -480,6 +478,6 @@ extension StickyHeaderTabController: UIScrollViewDelegate {
 extension StickyHeaderTabController: UIGestureRecognizerDelegate {
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
                                   shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return false //true
+        return true
     }
 }

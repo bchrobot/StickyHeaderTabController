@@ -7,15 +7,9 @@
 
 import UIKit
 
-public protocol StickyHeaderViewDelegate: class {
-    func stickyHeaderView(_ stickyHeaderView: StickyHeaderView, didChangeHeight height: CGFloat)
-}
-
 open class StickyHeaderView: UIView {
 
     // MARK: - Public Properties
-
-    public weak var delegate: StickyHeaderViewDelegate?
 
     /// The minimum header height (while pinned in sticky top position)
     open var pinnedHeight: CGFloat {
