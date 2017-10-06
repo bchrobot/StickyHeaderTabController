@@ -5,6 +5,10 @@
 [![License](https://img.shields.io/cocoapods/l/StickyHeaderTabController.svg?style=flat)](http://cocoapods.org/pods/StickyHeaderTabController)
 [![Platform](https://img.shields.io/cocoapods/p/StickyHeaderTabController.svg?style=flat)](http://cocoapods.org/pods/StickyHeaderTabController)
 
+Twitter profile-inspired tabbed content controller with sticky header and hero.
+
+![Demo Gif](Screenshots/StickyHeaderTabController.gif)
+
 ## Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
